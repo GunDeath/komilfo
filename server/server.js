@@ -2,7 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors')
 const connectDB = require('./config/DB');
-const productRoutes = require('./routes/product.routes')
+const productRoutes = require('./routes/product.routes');
+const filterRouter = require('./routes/filterRoutes')
 const {notFound, errorHandler} = require('./middleware/error.middleware');
 
 dotenv.config()
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/products', productRoutes);
+app.use('/find', filterRouter);
 
 app.use(notFound);
 app.use(errorHandler);
