@@ -28,6 +28,10 @@ const productSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    subCategory: {
+        type: String,
+        default: "polish"
+    },
     description:{
         type: String,
         required: true

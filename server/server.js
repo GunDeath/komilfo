@@ -4,6 +4,7 @@ const colors = require('colors')
 const connectDB = require('./config/DB');
 const productRoutes = require('./routes/product.routes');
 const filterRouter = require('./routes/filterRoutes')
+const userRouter = require('./routes/userRoutes')
 const {notFound, errorHandler} = require('./middleware/error.middleware');
 
 dotenv.config()
@@ -12,6 +13,8 @@ connectDB();
 
 const app = express();
 
+app.use(express.json())
+
 const PORT = process.env.PORT || 5001;
 
 app.get('/', (req, res) => {
@@ -19,6 +22,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRouter);
 app.use('/find', filterRouter);
 
 app.use(notFound);

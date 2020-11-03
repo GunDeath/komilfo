@@ -1,99 +1,25 @@
 const express = require('express');
-const asyncHandler = require('express-async-handler');
-const Product = require('../models/Product.model');
-
 const router = express.Router();
+const {getProducts, getProductById} = require('../controllers/productController')
+const {filterProductUp, filterProductLow, sortProductsLow,
+       sortProductsUpper, filterProductsByBrand,
+       filterProductsByCategory, filterProductsBySubCategory} = require('../controllers/productsFilter')
 
-//get all products
-router.get('/', asyncHandler(async (req, res) => {
-    const products = await Product.find({})
-    res.json(products)
-}))
-
+//get products
+router.route('/').get(getProducts);
 //get single product
-router.get('/:id', asyncHandler( async(req, res) => {
-    const product = await Product.findById(req.params.id)
-
-    if(product) {
-        res.json(product)
-    }else{
-        res.status(404)
-        throw new Error('Product not found')
-    }
-}))
-
-//get products low that get price
-router.get('/filter/low/:price', asyncHandler(async (req, res) => {
-    const products = await Product.find({price : {$lt : req.params.price}})
-    if(products){
-        res.json(products)
-    }else{
-        res.status(404)
-        throw new Error('Product not found')
-    }
-    res.send(`Get`)
-
-}))
-
-//get products upper then get price
-router.get('/filter/up/:price', asyncHandler(async (req, res) => {
-    const products = await Product.find({price : {$gt : req.params.price}})
-    if(products){
-        res.json(products)
-    }else{
-        res.status(404)
-        throw new Error('Product not found')
-    }
-    res.send(`Get`)
-
-}))
-
-//get product up price first
-router.get('/sort/up', asyncHandler(async (req, res) => {
-    const products = await Product.find({}).sort({price: -1})
-    if(products){
-        res.json(products)
-    }else{
-        res.status(404)
-        throw new Error('Product not found')
-    }
-    res.send(`Get`)
-
-}))
-
-//get product low price first
-router.get('/sort/low', asyncHandler(async (req, res) => {
-    const products = await Product.find({}).sort({price: 1})
-    if(products){
-        res.json(products)
-    }else{
-        res.status(404)
-        throw new Error('Product not found')
-    }
-    res.send(`Get`)
-
-}))
-
-//filter products by brand
-router.get('/brand/:brand', asyncHandler(async (req, res) => {
-    const product = await Product.find({brand: req.params.brand})
-    if(product) {
-        res.json(product)
-    }else{
-        res.status(404)
-        throw new Error('Product not found')
-    }
-}))
-
-//filter products by category
-router.get('/category/:category', asyncHandler(async (req, res) => {
-    const product = await Product.find({category: req.params.category})
-    if(product) {
-        res.json(product)
-    }else{
-        res.status(404)
-        throw new Error('Product not found')
-    }
-}))
+router.route('/:id').get(getProductById);
+//filter products
+router.route('/filter/up/:price').get(filterProductUp);
+router.route('/filter/low/:price').get(filterProductLow);
+//sort products
+router.route('/sort/low').get(sortProductsLow);
+router.route('/sort/up').get(sortProductsUpper);
+//get products by brand
+router.route('/brand/:brand').get(filterProductsByBrand);
+//get products by category
+router.route('/category/:category').get(filterProductsByCategory);
+//get products by subCategory
+router.route('/category/:subCategory').get(filterProductsBySubCategory);
 
 module.exports = router;
