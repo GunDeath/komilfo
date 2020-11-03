@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRouter);
-app.use('/find', filterRouter);
 
 app.use(notFound);
 app.use(errorHandler);
