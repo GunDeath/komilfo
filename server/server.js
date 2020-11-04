@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const colors = require('colors')
 const connectDB = require('./config/DB');
 const productRoutes = require('./routes/product.routes');
-const filterRouter = require('./routes/filterRoutes')
+const orderRouter = require('./routes/orderRoutes')
 const userRouter = require('./routes/userRoutes')
 const {notFound, errorHandler} = require('./middleware/error.middleware');
 
@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRouter);
+app.use('/api/orders', orderRouter);
 
 app.use(notFound);
 app.use(errorHandler);
